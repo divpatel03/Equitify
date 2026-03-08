@@ -7,14 +7,18 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 @Service
 public class StockService {
 
     private final String API_URL = "https://finnhub.io/api/v1/quote?symbol=";
-    private final String API_TOKEN = "cp743jhr01qpb9rahbn0cp743jhr01qpb9rahbng"; // Replace with your actual API token
+
+    @Value("${FINNHUB_API_KEY}")
+    private String API_TOKEN;
 
     public List<StockPrice> fetchStockPrices(List<String> stockSymbols) {
         HttpClient client = HttpClient.newHttpClient();
@@ -38,10 +42,7 @@ public class StockService {
     }
 
     private StockPrice parseStockPrice(String responseBody, String symbol) {
-        // Assuming the response is JSON and contains a field "c" for the current price
-        // You can use a JSON library like Jackson to parse this properly
         try {
-         
             double price = new ObjectMapper().readTree(responseBody).get("c").asDouble();
             return new StockPrice(symbol, price);
         } catch (Exception e) {

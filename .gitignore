@@ -1,4 +1,15 @@
-node_modules/
-dist/
+# Maven build output
+backend/target/
+
+# Secret config — never commit this
+backend/src/main/resources/application.properties
+
+# Node dependencies
+frontend/node_modules/
+
+# Vite build output
+frontend/dist/
+
+# Environment files
 .env
-target/
+.env.local
